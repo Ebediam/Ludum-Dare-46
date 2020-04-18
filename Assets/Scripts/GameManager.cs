@@ -6,8 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    public delegate void RestartDelegate();
-    public static RestartDelegate RestartEvent;
+    public delegate void GameManagerDelegate();
+    public static GameManagerDelegate RestartEvent;
+    public static GameManagerDelegate NextLevelEvent;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +24,9 @@ public class GameManager : MonoBehaviour
 
     public static void NextLevel()
     {
-        RestartEvent?.Invoke();
+        
+        NextLevelEvent?.Invoke();
+
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex+1, LoadSceneMode.Single);
     }
 

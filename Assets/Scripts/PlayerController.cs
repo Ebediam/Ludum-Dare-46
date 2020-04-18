@@ -56,6 +56,8 @@ public class PlayerController : MonoBehaviour
     Vector2 direction;
     Vector2 rotateDirection;
 
+    [HideInInspector] public bool checkVerticalSpeed = true;
+
 
     public static PlayerController local;
 
@@ -88,7 +90,9 @@ public class PlayerController : MonoBehaviour
 
         controls.Gameplay.Restart.performed += RestartGame;
 
+
         GameManager.RestartEvent += OnRestart;
+        GameManager.NextLevelEvent += OnNextLevel;
 
         Cursor.lockState = CursorLockMode.Locked;
         jumpSFX.clip = data.jumpSFX;
@@ -115,7 +119,14 @@ public class PlayerController : MonoBehaviour
             data.levelFailed = false;
         }
 
-
+        if (data.checkPoint)
+        {
+            if (CheckPoint.local)
+            {
+                transform.position = CheckPoint.local.transform.position;
+                transform.rotation = CheckPoint.local.transform.rotation;
+            }
+        }
 
     }
 
@@ -175,7 +186,7 @@ public class PlayerController : MonoBehaviour
         if (!isGrounded)
         {           
 
-            /*Vector2 horizontalSpeed = new Vector2(rb.velocity.x, rb.velocity.z);
+            Vector2 horizontalSpeed = new Vector2(rb.velocity.x, rb.velocity.z);
 
             if (horizontalSpeed.magnitude > data.maxAirHorizontalSpeed)
             {
@@ -184,13 +195,21 @@ public class PlayerController : MonoBehaviour
                 rb.velocity = new Vector3(Mathf.Lerp(rb.velocity.x, horizontalSpeed.x, data.velocityDamper), rb.velocity.y, Mathf.Lerp(rb.velocity.z, horizontalSpeed.y, data.velocityDamper));
             }
 
-            if (Mathf.Abs(rb.velocity.y) > data.maxAirVerticalSpeed)
+            if (checkVerticalSpeed)
             {
-                rb.velocity = new Vector3(rb.velocity.x, Mathf.Lerp(rb.velocity.y, Mathf.Sign(rb.velocity.y)*data.maxAirVerticalSpeed, data.velocityDamper), rb.velocity.z);
-            }*/
+                if (Mathf.Abs(rb.velocity.y) > data.maxAirVerticalSpeed)
+                {
+                    rb.velocity = new Vector3(rb.velocity.x, Mathf.Lerp(rb.velocity.y, Mathf.Sign(rb.velocity.y) * data.maxAirVerticalSpeed, data.velocityDamper), rb.velocity.z);
+                }
+            }
+
+
         }
         else
         {
+ 
+            
+
             Vector2 horizontalSpeed = new Vector2(rb.velocity.x, rb.velocity.z);
 
             if (horizontalSpeed.magnitude > data.maxSpeed)
@@ -442,6 +461,7 @@ public class PlayerController : MonoBehaviour
             undeteattachable = true;
             CancelInvoke("AllowDeattach");
             Invoke("AllowDeattach", data.undeattachableTimer);
+            airBoostEnabled = true;
 
             Movable movable = hitInfo.collider.GetComponentInParent<Movable>();
 
@@ -516,9 +536,22 @@ public class PlayerController : MonoBehaviour
             
 
 
-            rb.AddForce(attachDirection * data.cableTension*(distanceToAttachPoint-cableDistance), ForceMode.Acceleration);
+            rb.AddForce(attachDirection * data.cableTension*(distanceToAttachPoint-cableDistance)*Time.deltaTime, ForceMode.Acceleration);
             
         }
+    }
+
+    public void UnClampVerticalSpeed()
+    {
+        checkVerticalSpeed = false;
+        CancelInvoke("ClampVerticalSpeed");
+        Invoke("ClampVerticalSpeed", 1f);
+
+    }
+
+    public void ClampVerticalSpeed()
+    {
+        checkVerticalSpeed = true;
     }
 
     public void CanJump()
@@ -555,6 +588,7 @@ public class PlayerController : MonoBehaviour
         GameManager.RestartGame();
     }
 
+
     private void OnEnable()
     {
         controls.Gameplay.Enable();
@@ -568,7 +602,7 @@ public class PlayerController : MonoBehaviour
     public void OnRestart()
     {
         GameManager.RestartEvent -= OnRestart;
-
+        GameManager.NextLevelEvent -= OnNextLevel;
         controls.Gameplay.Jump.performed -= Jump;
 
         controls.Gameplay.Move.performed -= MoveMask;
@@ -586,6 +620,12 @@ public class PlayerController : MonoBehaviour
         controls.Gameplay.Release.canceled -= StopReleaseEvent;
 
         controls.Gameplay.Restart.performed -= RestartGame;
+    }
+
+    public void OnNextLevel()
+    {
+        data.checkPoint = false;
+        OnRestart();
     }
 
 }

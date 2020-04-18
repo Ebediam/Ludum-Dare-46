@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 405306611381585586}
   - component: {fileID: 405306611381585585}
   - component: {fileID: 1284084619601807673}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 405306611879231814}
   - component: {fileID: 405306611879231813}
   - component: {fileID: 405306611879231818}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -228,13 +228,13 @@ Rigidbody:
   m_GameObject: {fileID: 405306611879231812}
   serializedVersion: 2
   m_Mass: 50
-  m_Drag: 0.05
+  m_Drag: 0.2
   m_AngularDrag: 0.2
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!114 &405306611879231818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -270,7 +270,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 405306612181294754}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -302,7 +302,7 @@ GameObject:
   - component: {fileID: 5064672681798537165}
   - component: {fileID: 7294892417979097528}
   - component: {fileID: 2069362104162712034}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HitPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -379,7 +379,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6506830316655472412}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HoldPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -410,7 +410,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2537019285765657569}
   - component: {fileID: 4161824919839760668}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: DashSFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -537,7 +537,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3281500484045216787}
   - component: {fileID: 4578645485812304274}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: LandSFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -664,7 +664,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8458189744114162601}
   - component: {fileID: 2339654739612472}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: ShotSFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -790,7 +790,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7932728960430988025}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Sounds
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -827,7 +827,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1393234827111525677}
   - component: {fileID: 8820735949098430798}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: DeathSFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -954,7 +954,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2122223278236938084}
   - component: {fileID: 319723328890254655}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: JumpSFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1081,7 +1081,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4752108429978481554}
   - component: {fileID: 539616972893420956}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: PullSFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1205,6 +1205,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 405306611381585584}
     m_Modifications:
+    - target: {fileID: 1905899320910647371, guid: 15e60293ea2caf14a926506737f175a6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1905899321615269793, guid: 15e60293ea2caf14a926506737f175a6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1905899322138603265, guid: 15e60293ea2caf14a926506737f175a6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 1905899322332019189, guid: 15e60293ea2caf14a926506737f175a6,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1265,6 +1280,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hookshot
       objectReference: {fileID: 0}
+    - target: {fileID: 1905899322332019190, guid: 15e60293ea2caf14a926506737f175a6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 2120144548779760081, guid: 15e60293ea2caf14a926506737f175a6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15e60293ea2caf14a926506737f175a6, type: 3}
 --- !u!114 &398533278302951176 stripped
@@ -1292,10 +1317,20 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 405306611879231817}
     m_Modifications:
+    - target: {fileID: 8186017129054928320, guid: bb47f9ea0381f374bbddd76b997ccf1f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8186017130235772330, guid: bb47f9ea0381f374bbddd76b997ccf1f,
         type: 3}
       propertyPath: m_Name
       value: Canvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 8186017130235772330, guid: bb47f9ea0381f374bbddd76b997ccf1f,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8186017130235772334, guid: bb47f9ea0381f374bbddd76b997ccf1f,
         type: 3}
@@ -1476,6 +1511,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Cable
+      objectReference: {fileID: 0}
+    - target: {fileID: 8365414389580376210, guid: e8d1e2f8057d97845a29ae65703c01c1,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8d1e2f8057d97845a29ae65703c01c1, type: 3}

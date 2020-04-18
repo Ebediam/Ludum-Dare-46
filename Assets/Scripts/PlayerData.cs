@@ -14,6 +14,7 @@ public class PlayerData : ScriptableObject
     public float maxSpeed;
     public float acceleration;
     public float jumpForce;
+    public LayerMask groundLayer;
 
     [Header("Air movement settings")]
     public float maxAirHorizontalSpeed;
@@ -42,9 +43,10 @@ public class PlayerData : ScriptableObject
     [Header("Modifiers")]
     public float movementBoost;
 
-    [Header("Settings")]
+    [Header("Persistent info")]
     public bool levelFailed;
-    public LayerMask groundLayer;
+    public bool checkPoint;
+
 
     [Header("SFX")]
     public AudioClip jumpSFX;

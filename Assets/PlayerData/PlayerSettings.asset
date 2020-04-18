@@ -17,29 +17,30 @@ MonoBehaviour:
   maxSpeed: 7
   acceleration: 2500
   jumpForce: 10
-  maxAirHorizontalSpeed: 20
-  maxAirVerticalSpeed: 15
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  maxAirHorizontalSpeed: 80
+  maxAirVerticalSpeed: 30
   airAcceleration: 200
   velocityDamper: 0.01
   airBoostForce: 15
-  cableReleaseBoost: 5
+  cableReleaseBoost: 6
   pullForce: 10
-  cableTension: 10
+  cableTension: 1000
   cableLaunchSpeed: 50
-  maxCableLength: 12
-  minCableLenght: 2
+  maxCableLength: 15
+  minCableLenght: 3
   cablePullSpeed: 3
   cableReleaseSpeed: 2
   attachableLayer:
     serializedVersion: 2
-    m_Bits: 55
+    m_Bits: 2103
   maxCableActivationDelay: 0.25
   undeattachableTimer: 0.3
   movementBoost: 0
   levelFailed: 0
-  groundLayer:
-    serializedVersion: 2
-    m_Bits: 256
+  checkPoint: 0
   jumpSFX: {fileID: 8300000, guid: 344d52960726c4343abc95e5886341d0, type: 3}
   shotSFX: {fileID: 8300000, guid: 8167c9a01980d6145bfed2a7834ea3a8, type: 3}
   pullSFX: {fileID: 8300000, guid: 22cdb06334e46de4095e3bbdab895e8b, type: 3}

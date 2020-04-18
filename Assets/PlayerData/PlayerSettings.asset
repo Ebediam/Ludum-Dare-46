@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c70a07adc9eb2e9468fa5db484344c72, type: 3}
+  m_Name: PlayerSettings
+  m_EditorClassIdentifier: 
+  xMouseSensitivity: 0.4
+  yMouseSensitivity: 0.4
+  maxSpeed: 7
+  acceleration: 2500
+  jumpForce: 10
+  maxAirHorizontalSpeed: 20
+  maxAirVerticalSpeed: 15
+  airAcceleration: 200
+  velocityDamper: 0.01
+  pullForce: 10
+  cableTension: 10
+  cableLaunchSpeed: 50
+  maxCableLength: 15
+  cablePullSpeed: 3
+  cableReleaseSpeed: 2
+  attachableLayer:
+    serializedVersion: 2
+    m_Bits: 55
+  movementBoost: 0
+  completedLevel: 0
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  jumpSFX: {fileID: 8300000, guid: 344d52960726c4343abc95e5886341d0, type: 3}
+  shotSFX: {fileID: 8300000, guid: 8167c9a01980d6145bfed2a7834ea3a8, type: 3}
+  pullSFX: {fileID: 8300000, guid: 22cdb06334e46de4095e3bbdab895e8b, type: 3}
+  landSFX: {fileID: 8300000, guid: 1e764fe07d9afe04aa85ab046d4b0932, type: 3}

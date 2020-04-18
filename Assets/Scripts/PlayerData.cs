@@ -20,12 +20,14 @@ public class PlayerData : ScriptableObject
     public float maxAirVerticalSpeed;
     public float airAcceleration;
     public float velocityDamper;
+    public float airBoostForce;
 
     [Header("Cable settings")]
     public float pullForce;
     public float cableTension;
     public float cableLaunchSpeed;
     public float maxCableLength;
+    public float minCableLenght;
     public float cablePullSpeed;
     public float cableReleaseSpeed;
     public LayerMask attachableLayer;
@@ -36,7 +38,7 @@ public class PlayerData : ScriptableObject
     public float movementBoost;
 
     [Header("Settings")]
-    public bool completedLevel;
+    public bool levelFailed;
     public LayerMask groundLayer;
 
     [Header("SFX")]
@@ -44,6 +46,8 @@ public class PlayerData : ScriptableObject
     public AudioClip shotSFX;
     public AudioClip pullSFX;
     public AudioClip landSFX;
+    public AudioClip airBoostSFX;
+    public AudioClip deathSFX;
 
 
 }

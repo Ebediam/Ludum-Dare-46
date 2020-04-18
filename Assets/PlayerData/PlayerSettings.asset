@@ -21,17 +21,19 @@ MonoBehaviour:
   maxAirVerticalSpeed: 15
   airAcceleration: 200
   velocityDamper: 0.01
+  airBoostForce: 10
   pullForce: 10
   cableTension: 10
   cableLaunchSpeed: 50
-  maxCableLength: 15
+  maxCableLength: 12
+  minCableLenght: 2
   cablePullSpeed: 3
   cableReleaseSpeed: 2
   attachableLayer:
     serializedVersion: 2
     m_Bits: 55
   movementBoost: 0
-  completedLevel: 0
+  levelFailed: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -39,3 +41,5 @@ MonoBehaviour:
   shotSFX: {fileID: 8300000, guid: 8167c9a01980d6145bfed2a7834ea3a8, type: 3}
   pullSFX: {fileID: 8300000, guid: 22cdb06334e46de4095e3bbdab895e8b, type: 3}
   landSFX: {fileID: 8300000, guid: 1e764fe07d9afe04aa85ab046d4b0932, type: 3}
+  airBoostSFX: {fileID: 8300000, guid: 529424509c9b6ac4d889d11aa41b0f23, type: 3}
+  deathSFX: {fileID: 8300000, guid: fce89547b8539db4ea76e400a61e4a0c, type: 3}

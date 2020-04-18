@@ -24,6 +24,8 @@ public class PlayerController : MonoBehaviour
     public AudioSource shotSFX;
     public AudioSource pullSFX;
     public AudioSource landSFX;
+    public AudioSource dashSFX;
+    public AudioSource deathSFX;
 
     [Header("Debugging")]
     public GameObject hitPoint;
@@ -33,11 +35,13 @@ public class PlayerController : MonoBehaviour
     float timer = 0f;
     float timeToContact;
 
-    float maxCableDistance;
+    float cableDistance;
 
     bool cableEnabled = false;
     bool isGrounded;
     bool canJump = true;
+
+    bool airBoostEnabled = true;
 
     bool isPulling = false;
     bool isReleasing = false;
@@ -48,15 +52,21 @@ public class PlayerController : MonoBehaviour
 
     Vector2 direction;
     Vector2 rotateDirection;
-    
 
-   
+
+    public static PlayerController local;
 
     float yRotation;
     // Start is called before the first frame update
-    void Awake()
+
+    private void Awake()
     {
         controls = new PlayerControls();
+    }
+
+    private void Start()
+    {
+
         controls.Gameplay.Jump.performed += Jump;
 
         controls.Gameplay.Move.performed += MoveMask;
@@ -73,19 +83,34 @@ public class PlayerController : MonoBehaviour
         controls.Gameplay.Release.performed += ReleaseEvent;
         controls.Gameplay.Release.canceled += StopReleaseEvent;
 
-    }
+        controls.Gameplay.Restart.performed += RestartGame;
 
-    private void Start()
-    {
+        GameManager.RestartEvent += OnRestart;
+
         Cursor.lockState = CursorLockMode.Locked;
         jumpSFX.clip = data.jumpSFX;
         shotSFX.clip = data.shotSFX;
         pullSFX.clip = data.pullSFX;
         landSFX.clip = data.landSFX;
+        dashSFX.clip = data.airBoostSFX;
+        deathSFX.clip = data.deathSFX;
 
         hitPoint.transform.parent = null;
+        hitPoint.SetActive(false);
+
         line.transform.parent = null;
         line.useWorldSpace = true;
+        line.enabled = false;
+
+
+        local = this;
+
+        if (data.levelFailed)
+        {
+            deathSFX.Play();
+            data.levelFailed = false;
+        }
+
 
 
     }
@@ -114,6 +139,7 @@ public class PlayerController : MonoBehaviour
                 }
 
                 isGrounded = true;
+                airBoostEnabled = true;
 
             }
             else
@@ -152,7 +178,7 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        if (cableEnabled)
+        if (!isGrounded)
         {           
 
             /*Vector2 horizontalSpeed = new Vector2(rb.velocity.x, rb.velocity.z);
@@ -173,9 +199,9 @@ public class PlayerController : MonoBehaviour
         {
             Vector2 horizontalSpeed = new Vector2(rb.velocity.x, rb.velocity.z);
 
-            if (horizontalSpeed.magnitude > (data.maxSpeed + data.movementBoost))
+            if (horizontalSpeed.magnitude > data.maxSpeed)
             {
-                horizontalSpeed = Vector2.ClampMagnitude(horizontalSpeed, (data.maxSpeed + data.movementBoost));
+                horizontalSpeed = Vector2.ClampMagnitude(horizontalSpeed, data.maxSpeed);
 
                 rb.velocity = new Vector3(horizontalSpeed.x, rb.velocity.y, horizontalSpeed.y);
             }
@@ -252,8 +278,6 @@ public class PlayerController : MonoBehaviour
 
     public void Look(float angle)
     {
-
-
         yRotation += angle * data.yMouseSensitivity;
         yRotation = Mathf.Clamp(yRotation, -90f, 90f);
 
@@ -271,8 +295,29 @@ public class PlayerController : MonoBehaviour
 
             pullSFX.Play();
         }
+        else
+        {
+            AirBoost();
+        }
 
 
+    }
+
+    public void AirBoost()
+    {
+        if (isGrounded)
+        {
+            return;
+        }
+
+        if (!airBoostEnabled)
+        {
+            return;
+        }
+
+        rb.AddForce(transform.forward * data.airBoostForce, ForceMode.VelocityChange);
+        airBoostEnabled = false;
+        dashSFX.Play();
     }
 
     public void StopPulling(InputAction.CallbackContext context)
@@ -293,6 +338,7 @@ public class PlayerController : MonoBehaviour
             {
                 shotSFX.Play();
                 cableShot = true;
+                hitPoint.SetActive(true);
                 hitPoint.transform.position = hitInfo.point;
                 timeToContact = Vector3.Distance(hook.attachPoint.position, hitPoint.transform.position) / data.cableLaunchSpeed;
                 line.enabled = true;
@@ -310,7 +356,7 @@ public class PlayerController : MonoBehaviour
             line.enabled = false;
             cableEnabled = false;
             hook.transform.localRotation = Quaternion.identity;
-            maxCableDistance = 9999f;
+            cableDistance = 9999f;
         }
 
         
@@ -326,7 +372,7 @@ public class PlayerController : MonoBehaviour
         {
             timer = 0f; 
             
-            maxCableDistance = Vector3.Distance(hook.attachPoint.position, hitPoint.transform.position);
+            cableDistance = Vector3.Distance(hook.attachPoint.position, hitPoint.transform.position);
             cableShot = false;
             line.material = hook.attachMaterial;
         }
@@ -362,13 +408,13 @@ public class PlayerController : MonoBehaviour
     {
         float distanceToAttachPoint = Vector3.Distance(hook.attachPoint.position, hitPoint.transform.position);
 
-        if(distanceToAttachPoint > maxCableDistance)
+        if(distanceToAttachPoint > cableDistance)
         {
             Vector3 attachDirection = hitPoint.transform.position - hook.attachPoint.position;
             
 
 
-            rb.AddForce(attachDirection * data.cableTension*(distanceToAttachPoint-maxCableDistance), ForceMode.Acceleration);
+            rb.AddForce(attachDirection * data.cableTension*(distanceToAttachPoint-cableDistance), ForceMode.Acceleration);
             
         }
     }
@@ -399,18 +445,27 @@ public class PlayerController : MonoBehaviour
 
         if (isReleasing)
         {
-            maxCableDistance += data.cableReleaseSpeed * Time.deltaTime;
+            if(cableDistance < data.maxCableLength) 
+            {
+                cableDistance += data.cableReleaseSpeed * Time.deltaTime;
+            }
+            
         }
 
         if (isPulling)
         {
-            maxCableDistance -= data.cablePullSpeed * Time.deltaTime;
+            if(cableDistance > data.minCableLenght)
+            cableDistance -= data.cablePullSpeed * Time.deltaTime;
         }
 
 
     }
 
 
+    public void RestartGame(InputAction.CallbackContext context)
+    {
+        GameManager.RestartGame();
+    }
 
     private void OnEnable()
     {
@@ -422,5 +477,27 @@ public class PlayerController : MonoBehaviour
         controls.Gameplay.Disable();
     }
 
+    public void OnRestart()
+    {
+        GameManager.RestartEvent -= OnRestart;
+
+        controls.Gameplay.Jump.performed -= Jump;
+
+        controls.Gameplay.Move.performed -= MoveMask;
+        controls.Gameplay.Move.canceled -= StopMoving;
+
+        controls.Gameplay.Rotate.performed -= RotateMask;
+        controls.Gameplay.Rotate.canceled -= StopRotating;
+
+        controls.Gameplay.Fire.performed -= ShootEvent;
+
+        controls.Gameplay.Pull.performed -= PullEvent;
+        controls.Gameplay.Pull.canceled -= StopPulling;
+
+        controls.Gameplay.Release.performed -= ReleaseEvent;
+        controls.Gameplay.Release.canceled -= StopReleaseEvent;
+
+        controls.Gameplay.Restart.performed -= RestartGame;
+    }
 
 }

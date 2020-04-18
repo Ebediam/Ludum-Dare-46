@@ -21,6 +21,9 @@ public class PlayerData : ScriptableObject
     public float airAcceleration;
     public float velocityDamper;
     public float airBoostForce;
+    public float cableReleaseBoost;
+
+
 
     [Header("Cable settings")]
     public float pullForce;
@@ -31,6 +34,8 @@ public class PlayerData : ScriptableObject
     public float cablePullSpeed;
     public float cableReleaseSpeed;
     public LayerMask attachableLayer;
+    public float maxCableActivationDelay;
+    public float undeattachableTimer;
 
 
 

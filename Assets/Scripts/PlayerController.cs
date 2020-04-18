@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Debugging")]
     public GameObject hitPoint;
+    public Movable selectedMovable;
 
     bool cableShot;
 
@@ -36,6 +37,7 @@ public class PlayerController : MonoBehaviour
     float timeToContact;
 
     float cableDistance;
+
 
     bool cableEnabled = false;
     bool isGrounded;
@@ -48,7 +50,8 @@ public class PlayerController : MonoBehaviour
 
     Ray groundRay;
 
-    bool canAttach;
+    bool undeteattachable = false;
+    bool hasPressed;
 
     Vector2 direction;
     Vector2 rotateDirection;
@@ -102,6 +105,7 @@ public class PlayerController : MonoBehaviour
         line.useWorldSpace = true;
         line.enabled = false;
 
+        
 
         local = this;
 
@@ -113,16 +117,6 @@ public class PlayerController : MonoBehaviour
 
 
 
-    }
-
-    public void RotateMask(InputAction.CallbackContext context)
-    {
-        rotateDirection = context.ReadValue<Vector2>();
-    }
-
-    public void StopRotating(InputAction.CallbackContext context)
-    {
-        rotateDirection = Vector2.zero;
     }
 
     void Update()
@@ -207,7 +201,11 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        
+
+        if (hasPressed)
+        {
+            StartShoot();
+        }
 
     }
 
@@ -223,12 +221,12 @@ public class PlayerController : MonoBehaviour
             if (Physics.Raycast(ray, out hitInfo, data.maxCableLength, data.attachableLayer))
             {
 
-                canAttach = true;
+
                 UIController.pointer.color = Color.cyan;
             }
             else
             {
-                canAttach = false;
+                
                 UIController.pointer.color = Color.white;
             }
         }
@@ -265,6 +263,16 @@ public class PlayerController : MonoBehaviour
     }
 
 
+    public void RotateMask(InputAction.CallbackContext context)
+    {
+        rotateDirection = context.ReadValue<Vector2>();
+    }
+
+    public void StopRotating(InputAction.CallbackContext context)
+    {
+        rotateDirection = Vector2.zero;
+    }
+
     public void Rotate(Vector2 direction2D)
     {
 
@@ -285,23 +293,65 @@ public class PlayerController : MonoBehaviour
     }
 
 
-    public void PullEvent(InputAction.CallbackContext context) { 
-    
-        if(cableEnabled)
-        {
-            isPulling = true;
-            isReleasing = false;
-                     
+    public void PullEvent(InputAction.CallbackContext context) {
 
-            pullSFX.Play();
+        if (selectedMovable)
+        {
+            selectedMovable.Move(transform.position, true) ;
+            //RemoveCable();
+
         }
         else
         {
-            AirBoost();
+            if (cableEnabled)
+            {
+                isPulling = true;
+                isReleasing = false;
+
+
+                pullSFX.Play();
+            }
+            else
+            {
+                AirBoost();
+            }
         }
 
 
+
+
+
     }
+    public void StopPulling(InputAction.CallbackContext context)
+    {
+        isPulling = false;
+    }
+
+
+    public void ReleaseEvent(InputAction.CallbackContext context)
+    {
+        if (selectedMovable)
+        {
+            selectedMovable.Move(transform.position, false);
+            //RemoveCable();
+        }
+        else
+        {
+
+            if (cableEnabled)
+            {
+                isReleasing = true;
+                isPulling = false;
+            }
+        }
+
+    }
+
+    public void StopReleaseEvent(InputAction.CallbackContext context)
+    {
+        isReleasing = false;
+    }
+
 
     public void AirBoost()
     {
@@ -315,54 +365,106 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        rb.AddForce(transform.forward * data.airBoostForce, ForceMode.VelocityChange);
+        rb.velocity = Vector3.zero;
+        rb.AddForce(view.transform.forward * data.airBoostForce, ForceMode.VelocityChange);
         airBoostEnabled = false;
         dashSFX.Play();
     }
 
-    public void StopPulling(InputAction.CallbackContext context)
-    {
-        isPulling = false;
-    }
+
 
     public void ShootEvent(InputAction.CallbackContext context)
     {
+        if (cableShot)
+        {
+            return;
+        }
+
+        if (undeteattachable)
+        {
+            return;
+        }
+
+
         if (!cableEnabled)
-        { 
-
-            RaycastHit hitInfo;
-
-            Ray ray = new Ray(view.transform.position, view.transform.forward);
-
-            if (Physics.Raycast(ray, out hitInfo, data.maxCableLength, data.attachableLayer))
-            {
-                shotSFX.Play();
-                cableShot = true;
-                hitPoint.SetActive(true);
-                hitPoint.transform.position = hitInfo.point;
-                timeToContact = Vector3.Distance(hook.attachPoint.position, hitPoint.transform.position) / data.cableLaunchSpeed;
-                line.enabled = true;
-                line.material = hook.unattachMaterial;
-                cableEnabled = true;
-                UIController.pointer.color = Color.white;
-
-            }
-
-
-
+        {
+            hasPressed = true;
+            CancelInvoke("EndPress");
+            Invoke("EndPress", data.maxCableActivationDelay);
         }
         else
         {
-            line.enabled = false;
-            cableEnabled = false;
-            hook.transform.localRotation = Quaternion.identity;
-            cableDistance = 9999f;
+            if (!isGrounded)
+            {
+                rb.AddForce(view.transform.forward * data.cableReleaseBoost, ForceMode.VelocityChange);
+            }
+            
+            RemoveCable();
         }
-
-        
 
     }
 
+    public void RemoveCable()
+    {
+        line.enabled = false;
+        cableEnabled = false;
+        hook.transform.localRotation = Quaternion.identity;
+        cableDistance = 9999f;
+        hasPressed = false;
+        hitPoint.SetActive(false);
+    }
+
+    public void EndPress()
+    {
+        hasPressed = false;
+    }
+
+    public void StartShoot()
+    {
+        RaycastHit hitInfo;
+
+        Ray ray = new Ray(view.transform.position, view.transform.forward);
+
+        if (Physics.Raycast(ray, out hitInfo, data.maxCableLength, data.attachableLayer))
+        {
+            shotSFX.Play();
+            cableShot = true;
+            hitPoint.SetActive(true);
+            hitPoint.transform.parent = null;
+            hitPoint.transform.position = hitInfo.point;
+            timeToContact = Vector3.Distance(hook.attachPoint.position, hitPoint.transform.position) / data.cableLaunchSpeed;
+            line.enabled = true;
+            line.SetPositions(new Vector3[2] { hook.attachPoint.position, hook.attachPoint.position });
+            line.material = hook.unattachMaterial;
+            cableEnabled = true;
+            UIController.pointer.color = Color.white;
+            hasPressed = false;
+            undeteattachable = true;
+            CancelInvoke("AllowDeattach");
+            Invoke("AllowDeattach", data.undeattachableTimer);
+
+            Movable movable = hitInfo.collider.GetComponentInParent<Movable>();
+
+            if (movable)
+            {
+                selectedMovable = movable;
+                hitPoint.transform.parent = selectedMovable.transform;
+
+            }
+            else 
+            { 
+                selectedMovable = null;
+            }
+
+
+        }
+
+    }
+
+    public void AllowDeattach()
+    {
+        undeteattachable = false;
+    }
 
     public void AdvanceCable()
     {
@@ -419,20 +521,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void ReleaseEvent(InputAction.CallbackContext context)
-    {
-        if (cableEnabled)
-        {
-            isReleasing = true;
-            isPulling = false;
-        }
-    }
-
-    public void StopReleaseEvent(InputAction.CallbackContext context)
-    {
-        isReleasing = false;
-    }
-
     public void CanJump()
     {
         canJump = true;
@@ -440,7 +528,7 @@ public class PlayerController : MonoBehaviour
 
     public void UpdateCable()
     {
-        line.SetPosition(0, hook.attachPoint.position);
+        line.SetPositions(new Vector3[2] { hook.attachPoint.position, hitPoint.transform.position });
         hook.transform.LookAt(hitPoint.transform.position);
 
         if (isReleasing)

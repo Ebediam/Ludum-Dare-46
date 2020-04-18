@@ -227,7 +227,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 405306611879231812}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 50
   m_Drag: 0.05
   m_AngularDrag: 0.2
   m_UseGravity: 1
@@ -260,6 +260,7 @@ MonoBehaviour:
   dashSFX: {fileID: 4161824919839760668}
   deathSFX: {fileID: 8820735949098430798}
   hitPoint: {fileID: 549602600937599749}
+  selectedMovable: {fileID: 0}
 --- !u!1 &405306612181294753
 GameObject:
   m_ObjectHideFlags: 0
@@ -348,7 +349,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 77c486b10107ca44baadebc8e476a771, type: 2}
+  - {fileID: 2100000, guid: dfccfffe16c10a44387f5e5d8abfb573, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1207,7 +1208,7 @@ PrefabInstance:
     - target: {fileID: 1905899322332019189, guid: 15e60293ea2caf14a926506737f175a6,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.27
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1905899322332019189, guid: 15e60293ea2caf14a926506737f175a6,
         type: 3}

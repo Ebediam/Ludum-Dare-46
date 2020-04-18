@@ -21,7 +21,8 @@ MonoBehaviour:
   maxAirVerticalSpeed: 15
   airAcceleration: 200
   velocityDamper: 0.01
-  airBoostForce: 10
+  airBoostForce: 15
+  cableReleaseBoost: 5
   pullForce: 10
   cableTension: 10
   cableLaunchSpeed: 50
@@ -32,6 +33,8 @@ MonoBehaviour:
   attachableLayer:
     serializedVersion: 2
     m_Bits: 55
+  maxCableActivationDelay: 0.25
+  undeattachableTimer: 0.3
   movementBoost: 0
   levelFailed: 0
   groundLayer:

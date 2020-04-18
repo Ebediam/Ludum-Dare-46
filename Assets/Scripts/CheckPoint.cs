@@ -5,7 +5,9 @@ using UnityEngine;
 public class CheckPoint : MonoBehaviour
 {
     public static CheckPoint local;
-
+    public AudioSource checkPointSFX;
+    public MeshRenderer mesh;
+    public Collider _collider;
 
     public void Start()
     {
@@ -26,7 +28,12 @@ public class CheckPoint : MonoBehaviour
         if (player)
         {
             player.data.checkPoint = true;
+            checkPointSFX.Play();
+            mesh.enabled = false;
+            _collider.enabled = false;
         }
+
+
     }
 
 }

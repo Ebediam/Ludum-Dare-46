@@ -20,8 +20,8 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
-  maxAirHorizontalSpeed: 80
-  maxAirVerticalSpeed: 30
+  maxAirHorizontalSpeed: 30
+  maxAirVerticalSpeed: 80
   airAcceleration: 200
   velocityDamper: 0.01
   airBoostForce: 15
@@ -30,7 +30,7 @@ MonoBehaviour:
   cableTension: 1000
   cableLaunchSpeed: 50
   maxCableLength: 15
-  minCableLenght: 3
+  minCableLenght: 1
   cablePullSpeed: 3
   cableReleaseSpeed: 2
   attachableLayer:

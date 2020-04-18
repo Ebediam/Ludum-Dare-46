@@ -241,12 +241,12 @@ public class PlayerController : MonoBehaviour
             {
 
 
-                UIController.pointer.color = Color.cyan;
+                UIController.UIColorChangeEvent?.Invoke(Color.cyan);
             }
             else
             {
-                
-                UIController.pointer.color = Color.white;
+
+                UIController.UIColorChangeEvent?.Invoke(Color.white);
             }
         }
     }
@@ -430,6 +430,7 @@ public class PlayerController : MonoBehaviour
         hook.transform.localRotation = Quaternion.identity;
         cableDistance = 9999f;
         hasPressed = false;
+        selectedMovable = null;
         hitPoint.SetActive(false);
     }
 
@@ -456,10 +457,11 @@ public class PlayerController : MonoBehaviour
             line.SetPositions(new Vector3[2] { hook.attachPoint.position, hook.attachPoint.position });
             line.material = hook.unattachMaterial;
             cableEnabled = true;
-            UIController.pointer.color = Color.white;
+            UIController.UIColorChangeEvent?.Invoke(Color.white);
+            
             hasPressed = false;
             undeteattachable = true;
-            CancelInvoke("AllowDeattach");
+            CancelInvoke("AllowDeattach"    );
             Invoke("AllowDeattach", data.undeattachableTimer);
             airBoostEnabled = true;
 
@@ -494,7 +496,7 @@ public class PlayerController : MonoBehaviour
         {
             timer = 0f; 
             
-            cableDistance = Vector3.Distance(hook.attachPoint.position, hitPoint.transform.position);
+            cableDistance = Vector3.Distance(transform.position, hitPoint.transform.position);
             cableShot = false;
             line.material = hook.attachMaterial;
         }
@@ -528,15 +530,18 @@ public class PlayerController : MonoBehaviour
 
     public void AtractPlayer()
     {
-        float distanceToAttachPoint = Vector3.Distance(hook.attachPoint.position, hitPoint.transform.position);
+        float distanceToAttachPoint = Vector3.Distance(transform.position, hitPoint.transform.position);
+
 
         if(distanceToAttachPoint > cableDistance)
         {
-            Vector3 attachDirection = hitPoint.transform.position - hook.attachPoint.position;
+
+
+            Vector3 attachDirection = hitPoint.transform.position - transform.position;
             
+           
 
-
-            rb.AddForce(attachDirection * data.cableTension*(distanceToAttachPoint-cableDistance)*Time.deltaTime, ForceMode.Acceleration);
+           rb.AddForce(attachDirection.normalized * data.cableTension*(distanceToAttachPoint-cableDistance)*Time.deltaTime, ForceMode.Acceleration);
             
         }
     }

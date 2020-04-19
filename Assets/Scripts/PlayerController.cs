@@ -135,9 +135,17 @@ public class PlayerController : MonoBehaviour
         if (canJump)
         {
             groundRay = new Ray(groundCheck.transform.position, transform.up * -1f);
-            Debug.DrawRay(groundCheck.transform.position, transform.up * 0.3f * -1f, Color.red);
-            if (Physics.Raycast(groundRay, out RaycastHit hitInfo, 0.3f, data.groundLayer))
+
+            
+
+                Debug.DrawRay(groundCheck.transform.position, transform.up * 0.3f * -1f, Color.red);
+            
+            //if (Physics.Raycast(groundRay, out RaycastHit hitInfo, 0.3f, data.groundLayer)
+            if (Physics.CheckSphere(groundCheck.position, 0.1f, data.groundLayer))
             {
+
+                
+
                 if (!isGrounded)
                 {
                     landSFX.Play();
@@ -233,9 +241,12 @@ public class PlayerController : MonoBehaviour
         if (!cableEnabled)
         {
 
+            
+
             RaycastHit hitInfo;
 
             Ray ray = new Ray(view.transform.position, view.transform.forward);
+                        
 
             if (Physics.Raycast(ray, out hitInfo, data.maxCableLength, data.attachableLayer))
             {

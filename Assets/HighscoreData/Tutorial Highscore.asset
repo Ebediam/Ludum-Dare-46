@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Tutorial Highscore
   m_EditorClassIdentifier: 
   levelIndex: 0
-  timeInSeconds: 9999
+  timeInSeconds: 600
   airBoosts: 0
   totalDeaths: 0

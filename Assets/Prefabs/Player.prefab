@@ -184,7 +184,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 3f1a79f7e52834f4ea3818898608ee80, type: 2}
+  - {fileID: 2100000, guid: 76d1c87d0b665384ba7de011ddc0e9aa, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -227,7 +227,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 405306611879231812}
   serializedVersion: 2
-  m_Mass: 50
+  m_Mass: 1
   m_Drag: 0.2
   m_AngularDrag: 0.2
   m_UseGravity: 1
@@ -261,6 +261,7 @@ MonoBehaviour:
   deathSFX: {fileID: 8820735949098430798}
   hitPoint: {fileID: 549602600937599749}
   selectedMovable: {fileID: 0}
+  checkVerticalSpeed: 1
 --- !u!1 &405306612181294753
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,7 +286,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 405306612181294753}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -0.848, z: 0}
+  m_LocalPosition: {x: 0, y: -0.887, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 405306611879231817}

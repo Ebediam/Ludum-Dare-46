@@ -13,8 +13,6 @@ MonoBehaviour:
   m_Name: Level1 Highscore
   m_EditorClassIdentifier: 
   levelIndex: 1
-  timeInSeconds: 9999
-  totalAirBoosts: 0
-  leastAirBoosts: 9999
+  timeInSeconds: 600
+  airBoosts: 0
   totalDeaths: 0
-  leastDeaths: 9999

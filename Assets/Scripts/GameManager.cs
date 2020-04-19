@@ -25,7 +25,9 @@ public class GameManager : MonoBehaviour
 
         NextLevelEvent += OnNextLevel;
         RestartEvent += OnRestart;
-        music.Play();
+
+
+
 
     }
 
@@ -47,6 +49,10 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+
+        music.Play();
+        
+
         string stringTimer = FormatedTime(levelData.timeInSeconds);
 
         UIController.BestTimerEvent?.Invoke(stringTimer);
@@ -66,6 +72,12 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        if (!levelData)
+        {
+            return;
+        }
+
         timer += Time.deltaTime;
 
         string stringTimer = FormatedTime(timer);
@@ -75,13 +87,18 @@ public class GameManager : MonoBehaviour
 
     public void OnNextLevel()
     {
-        if (!data.checkPointUsed)
+        if (levelData)
         {
-            if (timer < levelData.timeInSeconds)
+            if (!data.checkPointUsed)
             {
-                levelData.timeInSeconds = timer;
+                if (timer < levelData.timeInSeconds)
+                {
+                    levelData.timeInSeconds = timer;
+                }
             }
+
         }
+
 
 
 
@@ -92,7 +109,12 @@ public class GameManager : MonoBehaviour
 
     public void OnRestart()
     {
-        levelData.totalDeaths++;
+
+        if (levelData)
+        {
+            levelData.totalDeaths++;
+        }
+
 
         if (PlayerController.local.data.checkPoint)
         {

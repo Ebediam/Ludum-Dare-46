@@ -61,6 +61,9 @@ public class PlayerController : MonoBehaviour
 
     public static PlayerController local;
 
+    public bool canMove = true;
+    public bool canShoot = true;
+
     float yRotation;
     // Start is called before the first frame update
 
@@ -275,6 +278,12 @@ public class PlayerController : MonoBehaviour
 
     public void Move(Vector2 direction2D)
     {
+        if (!canMove)
+        {
+            return;
+        }
+
+
         Vector3 direction = new Vector3(direction2D.x, 0f, direction2D.y);
 
         if (isGrounded)
@@ -405,6 +414,12 @@ public class PlayerController : MonoBehaviour
 
     public void ShootEvent(InputAction.CallbackContext context)
     {
+        if (!canShoot)
+        {
+            return;
+        }
+
+
         if (cableShot)
         {
             return;

@@ -53,6 +53,13 @@ public class UIController : MonoBehaviour
     }
 
 
+    public void HideUI()
+    {
+        deathText.text = "";
+        timerText.text = "";
+        bestTimeText.text = "";
+    }
+
     public void UpdateDeathText(string deaths)
     {
         deathText.text = "Deaths: " + deaths;

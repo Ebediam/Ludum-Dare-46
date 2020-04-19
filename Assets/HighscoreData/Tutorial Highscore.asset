@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c30b61acd23da94ca7b1471dd0de03c, type: 3}
   m_Name: Tutorial Highscore
   m_EditorClassIdentifier: 
-  levelIndex: 0
+  levelIndex: 1
   timeInSeconds: 600
-  airBoosts: 0
   totalDeaths: 0

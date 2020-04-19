@@ -73,6 +73,14 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Pause"",
+                    ""type"": ""Button"",
+                    ""id"": ""e211c6d1-34ed-4cba-8134-1a4dc7aa3830"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -229,6 +237,17 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                     ""action"": ""Restart"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""11691fd8-ade7-45e0-ab6c-db3c5256daea"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pause"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -244,6 +263,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         m_Gameplay_Pull = m_Gameplay.FindAction("Pull", throwIfNotFound: true);
         m_Gameplay_Release = m_Gameplay.FindAction("Release", throwIfNotFound: true);
         m_Gameplay_Restart = m_Gameplay.FindAction("Restart", throwIfNotFound: true);
+        m_Gameplay_Pause = m_Gameplay.FindAction("Pause", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -300,6 +320,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
     private readonly InputAction m_Gameplay_Pull;
     private readonly InputAction m_Gameplay_Release;
     private readonly InputAction m_Gameplay_Restart;
+    private readonly InputAction m_Gameplay_Pause;
     public struct GameplayActions
     {
         private @PlayerControls m_Wrapper;
@@ -311,6 +332,7 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         public InputAction @Pull => m_Wrapper.m_Gameplay_Pull;
         public InputAction @Release => m_Wrapper.m_Gameplay_Release;
         public InputAction @Restart => m_Wrapper.m_Gameplay_Restart;
+        public InputAction @Pause => m_Wrapper.m_Gameplay_Pause;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -341,6 +363,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Restart.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRestart;
                 @Restart.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRestart;
                 @Restart.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnRestart;
+                @Pause.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
+                @Pause.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
+                @Pause.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnPause;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -366,6 +391,9 @@ public class @PlayerControls : IInputActionCollection, IDisposable
                 @Restart.started += instance.OnRestart;
                 @Restart.performed += instance.OnRestart;
                 @Restart.canceled += instance.OnRestart;
+                @Pause.started += instance.OnPause;
+                @Pause.performed += instance.OnPause;
+                @Pause.canceled += instance.OnPause;
             }
         }
     }
@@ -379,5 +407,6 @@ public class @PlayerControls : IInputActionCollection, IDisposable
         void OnPull(InputAction.CallbackContext context);
         void OnRelease(InputAction.CallbackContext context);
         void OnRestart(InputAction.CallbackContext context);
+        void OnPause(InputAction.CallbackContext context);
     }
 }

@@ -93,6 +93,7 @@ public class PlayerController : MonoBehaviour
 
         controls.Gameplay.Restart.performed += RestartGame;
 
+        controls.Gameplay.Pause.performed += OnPause;
 
         GameManager.RestartEvent += OnRestart;
         GameManager.NextLevelEvent += OnNextLevel;
@@ -304,6 +305,12 @@ public class PlayerController : MonoBehaviour
 
     public void RotateMask(InputAction.CallbackContext context)
     {
+        if (GameManager.isPaused) 
+        { 
+            return;
+        }
+
+
         rotateDirection = context.ReadValue<Vector2>();
     }
 
@@ -537,6 +544,10 @@ public class PlayerController : MonoBehaviour
 
     public void Jump(InputAction.CallbackContext context)
     {
+        if (!canMove)
+        {
+            return;
+        }
 
         if (isGrounded)
         {
@@ -651,6 +662,8 @@ public class PlayerController : MonoBehaviour
         controls.Gameplay.Release.canceled -= StopReleaseEvent;
 
         controls.Gameplay.Restart.performed -= RestartGame;
+
+        controls.Gameplay.Pause.performed -= OnPause;
     }
 
     public void OnNextLevel()
@@ -658,5 +671,18 @@ public class PlayerController : MonoBehaviour
         data.checkPoint = false;
         OnRestart();
     }
+
+    public void OnPause(InputAction.CallbackContext context)
+    {
+        if (GameManager.isPaused)
+        {
+            GameManager.ResumeGame();
+        }
+        else
+        {
+            GameManager.PauseGame();
+        }
+    }
+
 
 }

@@ -21,6 +21,8 @@ public class UIController : MonoBehaviour
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI bestTimeText;
 
+    public GameObject pauseMenu;
+
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +33,8 @@ public class UIController : MonoBehaviour
         DeathTextEvent += UpdateDeathText;
         TimerEvent += UpdateTimer;
         BestTimerEvent += UpdateBestTimer;
+        GameManager.PauseEvent += OnPause;
+        GameManager.ResumeEvent += OnResume;
     }
 
 
@@ -50,6 +54,8 @@ public class UIController : MonoBehaviour
         DeathTextEvent -= UpdateDeathText;
         TimerEvent -= UpdateTimer;
         BestTimerEvent -= UpdateBestTimer;
+        GameManager.PauseEvent -= OnPause;
+        GameManager.ResumeEvent -= OnResume;
     }
 
 
@@ -75,6 +81,16 @@ public class UIController : MonoBehaviour
         bestTimeText.text = "Best time: " + time;
     }
 
+
+    public void OnPause()
+    {
+        pauseMenu.SetActive(true);
+    }
+
+    public void OnResume()
+    {
+        pauseMenu.SetActive(false);
+    }
 
     // Update is called once per frame
     void Update()

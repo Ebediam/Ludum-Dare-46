@@ -9,9 +9,13 @@ public class GameManager : MonoBehaviour
     public delegate void GameManagerDelegate();
     public static GameManagerDelegate RestartEvent;
     public static GameManagerDelegate NextLevelEvent;
+    public static GameManagerDelegate PauseEvent;
+    public static GameManagerDelegate ResumeEvent;
+
     public GameManagerData data;
     public AudioSource music;
 
+    public static bool isPaused = false;
 
     public HighscoreData levelData;
 
@@ -69,9 +73,35 @@ public class GameManager : MonoBehaviour
         return niceTime;
     }
 
+    public static void PauseGame()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        isPaused = true;
+        Time.timeScale = 0f;
+        PauseEvent?.Invoke();
+    }
+
+    public void ResumeGameLocal()
+    {
+        ResumeGame();
+    }
+
+    public static void ResumeGame()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        isPaused = false;
+        Time.timeScale = 1f;
+        ResumeEvent?.Invoke();
+    }
+
     // Update is called once per frame
     void Update()
     {
+
+        if (isPaused)
+        {
+            return;
+        }
 
         if (!levelData)
         {
@@ -115,19 +145,37 @@ public class GameManager : MonoBehaviour
             levelData.totalDeaths++;
         }
 
-
-        if (PlayerController.local.data.checkPoint)
+        if (PlayerController.local)
         {
-            data.checkPointUsed = true;
+            if (PlayerController.local.data.checkPoint)
+            {
+                data.checkPointUsed = true;
+            }
         }
+
+
 
         NextLevelEvent -= OnNextLevel;
         RestartEvent -= OnRestart;
     }
 
-    public static void NextLevel()
+    public void ChooseLevel(int levelIndex)
     {
-        
+        Time.timeScale = 1f;
+        isPaused = false;
+        data.checkPointUsed = true;
+        NextLevelEvent?.Invoke();
+
+        SceneManager.LoadSceneAsync(levelIndex, LoadSceneMode.Single);
+    }
+
+    public void NextLevelLocal()
+    {
+        NextLevel();
+    }
+
+    public static void NextLevel()
+    {        
         NextLevelEvent?.Invoke();
 
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex+1, LoadSceneMode.Single);
@@ -139,4 +187,16 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
         
     }
+
+    public void QuitGameLocal()
+    {
+        QuitGame();
+    }
+
+    public static void QuitGame()
+    {
+        Application.Quit();
+    }
+
+
 }

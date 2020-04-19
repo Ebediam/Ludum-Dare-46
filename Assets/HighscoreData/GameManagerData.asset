@@ -16,3 +16,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b9a333fcf789ee04191e299e664e41d8, type: 2}
   - {fileID: 11400000, guid: 1cdcf7971f2dcb141bf35ddf0c96ad4a, type: 2}
   - {fileID: 11400000, guid: 3191213b84db00f409fd7181cba0de10, type: 2}
+  - {fileID: 11400000, guid: 32b09d5df9060e8498ec3732f787f0f7, type: 2}
+  checkPointUsed: 0

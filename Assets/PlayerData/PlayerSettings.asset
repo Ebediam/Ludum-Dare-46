@@ -40,7 +40,7 @@ MonoBehaviour:
   undeattachableTimer: 0.3
   movementBoost: 0
   levelFailed: 0
-  checkPoint: 0
+  checkPoint: 1
   jumpSFX: {fileID: 8300000, guid: 344d52960726c4343abc95e5886341d0, type: 3}
   shotSFX: {fileID: 8300000, guid: 8167c9a01980d6145bfed2a7834ea3a8, type: 3}
   pullSFX: {fileID: 8300000, guid: 22cdb06334e46de4095e3bbdab895e8b, type: 3}

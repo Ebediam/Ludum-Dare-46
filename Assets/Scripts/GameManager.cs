@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     public static GameManagerDelegate RestartEvent;
     public static GameManagerDelegate NextLevelEvent;
     public GameManagerData data;
+    public AudioSource music;
+
 
     public HighscoreData levelData;
 
@@ -23,6 +25,8 @@ public class GameManager : MonoBehaviour
 
         NextLevelEvent += OnNextLevel;
         RestartEvent += OnRestart;
+        music.Play();
+
     }
 
     public void UpdateUI()
@@ -36,6 +40,11 @@ public class GameManager : MonoBehaviour
                 levelData = _levelData;
                 break;
             }
+        }
+
+        if (!levelData)
+        {
+            return;
         }
 
         string stringTimer = FormatedTime(levelData.timeInSeconds);

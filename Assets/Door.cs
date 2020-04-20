@@ -10,8 +10,8 @@ public class Door : MonoBehaviour
     public float timeToOpen;
     float timer = 0f;
 
-    bool isOpening = false;
-    bool isClosing = false;
+    public bool isOpening = false;
+    public bool isClosing = false;
 
 
     public enum DoorState
